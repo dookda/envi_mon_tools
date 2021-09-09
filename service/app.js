@@ -5,15 +5,39 @@ const con = require("./db");
 const db = con.db;
 
 
-app.get("/api/get-vibrate", (req, res) => {
-    // const { limit } = req.body;
+app.post("/api/getvibrate", (req, res) => {
+    const { start, end } = req.body;
     const limit = 4000;
 
-    const sql = `SELECT * FROM (SELECT TO_CHAR(ts, 'YYYY-MM-DD HH:MM:SS') as dt,  * 
-        FROM vibratexml ORDER BY ts desc LIMIT ${limit}) as aa
-        ORDER BY aa.dt asc`;
+    const sql = `SELECT TO_CHAR(ts, 'YYYY-MM-DD HH24:MI:SS') as dt, * FROM (
+        SELECT ts, avg(tranppv) as tranppv, 
+                avg(vertppv) as vertppv, 
+                avg(longppv) as longppv
+            FROM vibratexml 
+            WHERE ts BETWEEN '${start}' AND '${end}'
+            GROUP BY ts
+            ORDER BY ts desc 
+    ) as aa
+    ORDER BY aa.ts asc`;
 
     db.query(sql).then((r) => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/api/getmax", (req, res) => {
+    const { param, start, end } = req.body;
+    let sql = `SELECT TO_CHAR(ts, 'YYYY-MM-DD HH24:MI:SS') as dt,* FROM vibratexml
+    WHERE ${param}= (SELECT max(${param}) 
+        FROM vibratexml
+        WHERE ts BETWEEN '${start}' AND '${end}')
+    AND ts BETWEEN '${start}' AND '${end}'`
+
+    // console.log(sql);
+
+    db.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
         })

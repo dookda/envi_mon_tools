@@ -1,23 +1,46 @@
-let showChart = (dat, div) => {
+var map = L.map('map', {
+    center: [16.820378, 100.265787],
+    zoom: 13
+});
 
-    // Themes begin
+let loadMap = () => {
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    const grod = L.tileLayer('https://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+    const ghyb = L.tileLayer('https://{s}.google.com/vt/lyrs=y,m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+    var prov = L.tileLayer.wms("http://rti2dss.com:8080/geoserver/th/wms?", {
+        layers: 'th:province_4326',
+        format: 'image/png',
+        transparent: true
+    });
+    var baseMap = {
+        "OSM": osm,
+        "แผนที่ถนน": grod,
+        "แผนที่ภาพถ่าย": ghyb.addTo(map)
+    }
+    var overlayMap = {
+        "ขอบจังหวัด": prov.addTo(map)
+    }
+    L.control.layers(baseMap, overlayMap).addTo(map);
+}
+
+let showChart = (dat, div, unit) => {
     am4core.useTheme(am4themes_animated);
-    // Themes end
-
-    // Create chart instance
     var chart = am4core.create(div, am4charts.XYChart);
-
-    // Add data
     chart.data = dat;
-
-    // Set input format for the dates
     chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
-
-
-    // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = unit;
     // Create series
     var series = chart.series.push(new am4charts.LineSeries());
     series.dataFields.valueY = "value1";
@@ -26,23 +49,6 @@ let showChart = (dat, div) => {
     series.strokeWidth = 2;
     series.minBulletDistance = 15;
 
-    // var series2 = chart.series.push(new am4charts.LineSeries());
-    // series2.dataFields.valueY = "value2";
-    // series2.dataFields.dateX = "date";
-    // series2.strokeWidth = 2;
-    // series2.strokeDasharray = "3,4";
-    // series2.stroke = series.stroke;
-
-    // Drop-shaped tooltips
-    series.tooltip.background.cornerRadius = 20;
-    series.tooltip.background.strokeOpacity = 0;
-    series.tooltip.pointerOrientation = "vertical";
-    series.tooltip.label.minWidth = 40;
-    series.tooltip.label.minHeight = 40;
-    series.tooltip.label.textAlign = "middle";
-    series.tooltip.label.textValign = "middle";
-
-    // Make bullets grow on hover
     var bullet = series.bullets.push(new am4charts.CircleBullet());
     bullet.circle.strokeWidth = 2;
     bullet.circle.radius = 4;
@@ -51,60 +57,69 @@ let showChart = (dat, div) => {
     var bullethover = bullet.states.create("hover");
     bullethover.properties.scale = 1.3;
 
-    // Make a panning cursor
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.behavior = "panXY";
     chart.cursor.xAxis = dateAxis;
     chart.cursor.snapToSeries = series;
+    chart.cursor.behavior = "zoomX";
 
-    // Create vertical scrollbar and place it before the value axis
-    // chart.scrollbarY = new am4core.Scrollbar();
-    // chart.scrollbarY.parent = chart.leftAxesContainer;
-    // chart.scrollbarY.toBack();
-
-    // Create a horizontal scrollbar with previe and place it underneath the date axis
     chart.scrollbarX = new am4charts.XYChartScrollbar();
     chart.scrollbarX.series.push(series);
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-    // chart.scrollbarX = new am4core.Scrollbar();
-
-    // var scrollbarX2 = new am4core.Scrollbar();
-    // chart.scrollbarX = scrollbarX2;
-
-    // Add vertical scrollbar
-    // chart.scrollbarY2 = new am4core.Scrollbar();
-    // chart.scrollbarY2.marginLeft = 0;
-
-    // Add cursor
-    // chart.cursor = new am4charts.XYCursor();
-    chart.cursor.behavior = "zoomX";
-    // chart.cursor.lineX.disabled = true;
-
-
-    dateAxis.start = 0.79;
+    dateAxis.start = 0.50;
     dateAxis.keepSelection = true;
-
 
 }
 
-axios.get("http://localhost:3000/api/get-vibrate").then(r => {
-    // console.log(r.data.data);
-    let dat = [];
-    r.data.data.map(i => {
-        // console.log(i);
+let loadChart = (start, end) => {
+    let ts = { start, end }
+    axios.post("http://localhost:3000/api/getvibrate", ts).then(r => {
+        // console.log(r.data.data);
+        let datTranppv = [];
+        let datVertppv = [];
+        let datLongppv = [];
+        r.data.data.map(i => {
+            datTranppv.push({
+                date: i.ts,
+                value1: Number(i.tranppv)
+            })
 
-        dat.push({
-            date: i.dt,
-            value1: Number(i.tranppv)
+            datVertppv.push({
+                date: i.ts,
+                value1: Number(i.vertppv)
+            })
+
+            datLongppv.push({
+                date: i.ts,
+                value1: Number(i.longppv)
+            })
         })
-
+        setTimeout(() => {
+            showChart(datTranppv, "tranppv", "mm/s")
+            showChart(datVertppv, "vertppv", "mm/s")
+            showChart(datLongppv, "longppv", "mm/s")
+        }, 1000)
     })
+}
 
-    setTimeout(() => {
-        showChart(dat, "tranppv")
-        // console.log(dat);
-    }, 1000)
+let loadMax = (param, start, end, val, dt) => {
+    let ts = { param, start, end }
+    axios.post('/api/getmax', ts).then(r => {
+        console.log(r.data.data);
+        console.log(r.data.data[0][param]);
+        document.getElementById(val).innerHTML = r.data.data[0][param] + " mm/s";
+        document.getElementById(dt).innerHTML = r.data.data[0]["dt"];
+    })
+}
 
-})
+
+loadMap()
+loadChart('2021-09-01', '2021-09-03')
+
+loadMax('tranppv', '2021-09-01', '2021-09-03', "tval", "tdt")
+loadMax('vertppv', '2021-09-01', '2021-09-03', "vval", "vdt")
+loadMax('longppv', '2021-09-01', '2021-09-03', "lval", "ldt")
+
+
 
