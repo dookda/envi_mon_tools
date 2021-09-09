@@ -74,7 +74,7 @@ let showChart = (dat, div, unit) => {
 
 let loadChart = (start, end) => {
     let ts = { start, end }
-    axios.post("http://rti2dss:3510/api/getvibrate", ts).then(r => {
+    axios.post("/api/getvibrate", ts).then(r => {
         // console.log(r.data.data);
         let datTranppv = [];
         let datVertppv = [];
@@ -106,8 +106,8 @@ let loadChart = (start, end) => {
 let loadMax = (param, start, end, val, dt) => {
     let ts = { param, start, end }
     axios.post('/api/getmax', ts).then(r => {
-        console.log(r.data.data);
-        console.log(r.data.data[0][param]);
+        // console.log(r.data.data);
+        // console.log(r.data.data[0][param]);
         document.getElementById(val).innerHTML = r.data.data[0][param] + " mm/s";
         document.getElementById(dt).innerHTML = r.data.data[0]["dt"] + " น.";
     })
