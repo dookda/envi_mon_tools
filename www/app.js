@@ -74,7 +74,7 @@ let showChart = (dat, div, unit) => {
 
 let loadChart = (start, end) => {
     let ts = { start, end }
-    axios.post("http://localhost:3000/api/getvibrate", ts).then(r => {
+    axios.post("http://rti2dss:3510/api/getvibrate", ts).then(r => {
         // console.log(r.data.data);
         let datTranppv = [];
         let datVertppv = [];
@@ -109,17 +109,27 @@ let loadMax = (param, start, end, val, dt) => {
         console.log(r.data.data);
         console.log(r.data.data[0][param]);
         document.getElementById(val).innerHTML = r.data.data[0][param] + " mm/s";
-        document.getElementById(dt).innerHTML = r.data.data[0]["dt"];
+        document.getElementById(dt).innerHTML = r.data.data[0]["dt"] + " น.";
     })
 }
 
-
 loadMap()
-loadChart('2021-09-01', '2021-09-03')
 
-loadMax('tranppv', '2021-09-01', '2021-09-03', "tval", "tdt")
-loadMax('vertppv', '2021-09-01', '2021-09-03', "vval", "vdt")
-loadMax('longppv', '2021-09-01', '2021-09-03', "lval", "ldt")
+let loadData = () => {
+    let start = document.getElementById("start").value;
+    let end = document.getElementById("end").value;
 
+    loadChart(start, end)
+    loadMax('tranppv', start, end, "tval", "tdt")
+    loadMax('vertppv', start, end, "vval", "vdt")
+    loadMax('longppv', start, end, "lval", "ldt")
+}
+
+let start = document.getElementById("start").value = "2021-09-03";
+let end = document.getElementById("end").value = "2021-09-04";
+loadChart(start, end)
+loadMax('tranppv', start, end, "tval", "tdt")
+loadMax('vertppv', start, end, "vval", "vdt")
+loadMax('longppv', start, end, "lval", "ldt")
 
 

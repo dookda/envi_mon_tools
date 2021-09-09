@@ -20,37 +20,44 @@
 
 <body>
 
-    <div class="container">
-
-        <div class="shadow p-3 mb-5 bg-white rounded mt-30">
-            Dashboard</div>
-
-
-
+    <div class="container mt-30">
         <div class="row">
             <div class="col-sm-4">
                 <div class="shadow p-3 mb-5 bg-white rounded map" id="map"></div>
             </div>
             <div class="col-sm-8">
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    Dashboard
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input class="form-control" type="date" name="" id="start">
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="date" name="" id="end">
+                        </div>
+                    </div>
+                    <p></p>
+                    <button class="btn btn-success" id="btnDate" onclick="loadData()">เลือกข้อมูล</button>
+                </div>
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="shadow p-3 mb-5 bg-white rounded">
-                            Max Tran
-                            <br><span class="badge bg-warning f20" id="tval"></span>
+                            <h6>Max Tran</h6>
+                            <span class="f20-warning" id="tval"></span>
                             <hr>วันที่&nbsp;<span id="tdt">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="shadow p-3 mb-5 bg-white rounded">
-                            Max Vert
-                            <br><span class="badge bg-warning f20" id="vval"></span>
+                            <h6>Max Vert</h6>
+                            <span class="f20-warning" id="vval"></span>
                             <hr>วันที่&nbsp;<span id="vdt">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="shadow p-3 mb-5 bg-white rounded">
-                            Max Long
-                            <br><span class="badge bg-warning f20" id="lval"></span>
+                            <h6>Max Long</h6>
+                            <span class="f20-warning" id="lval"></span>
                             <hr>วันที่&nbsp;<span id="ldt">
                         </div>
                     </div>
@@ -59,15 +66,15 @@
         </div>
 
         <div class="shadow p-3 mb-5 bg-white rounded text-center">
-            Tran
+            <span class="f20-warning">Tran</span>
             <div class="chartdiv" id="tranppv"></div>
         </div>
         <div class="shadow p-3 mb-5 bg-white rounded text-center">
-            Vert
+            <span class="f20-warning">Vert</span>
             <div class="chartdiv" id="vertppv"></div>
         </div>
         <div class="shadow p-3 mb-5 bg-white rounded text-center">
-            Long
+            <span class="f20-warning">Long</span>
             <div class="chartdiv" id="longppv"></div>
         </div>
 

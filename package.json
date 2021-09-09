@@ -2,7 +2,7 @@
   "name": "envi_mon_tools",
   "version": "1.0.0",
   "description": "envi tools project",
-  "main": "server.js",
+  "main": "envimon3510.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

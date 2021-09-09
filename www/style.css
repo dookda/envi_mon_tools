@@ -15,7 +15,18 @@ html, body{
   height: 300px;
 }
 
-.f20{
+.f20-warning{
   font-size: 20px;
   font-weight: bold;
+  background-color: #fec108;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.f20-info{
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #0dcaf0;
+  padding: 6px;
+  border-radius: 8px;
 }
