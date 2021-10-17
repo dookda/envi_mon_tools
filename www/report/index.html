@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="container mt-30">
+        <div class="shadow p-3 mb-3 bg-white rounded">
+            <div class="row">
+                <div class="col-sm-6 mt-3">
+                    <label for="">จากวันที่</label>
+                    <input class="form-control" type="date" name="" id="start">
+                </div>
+                <div class="col-sm-6 mt-3">
+                    <label for="">ถึงวันที่</label>
+                    <input class="form-control" type="date" name="" id="end">
+                </div>
+            </div>
+            <p></p>
+            <button class="btn btn-success" id="btnDate" onclick="loadData()">เลือกข้อมูล</button>
+        </div>
+
+        <div class="shadow p-3 mb-3 bg-white rounded">
+            <h6>Max Tran</h6>
+            <span class="f30-warning" id="tval"></span>
+            <hr>วันที่&nbsp;<span id="tdt">
+        </div>
+
+        <div class="shadow p-3 mb-3 bg-white rounded">
+            <h6>Max Vert</h6>
+            <span class="f30-warning" id="vval"></span>
+            <hr>วันที่&nbsp;<span id="vdt">
+        </div>
+
+        <div class="shadow p-3 mb-3 bg-white rounded">
+            <h6>Max Long</h6>
+            <span class="f30-warning" id="lval"></span>
+            <hr>วันที่&nbsp;<span id="ldt">
+        </div>
+    </div>
+
+
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
