@@ -2,9 +2,12 @@ import psycopg2 as pg2
 import os
 import ftplib
 from xml.dom import minidom
+from auth import conn
 
-conn = pg2.connect(user="postgres", password="Pgis@xxx@2020",
-                   host="119.59.125.134", database="envidb")
+conn = pg2.connect(user=conn["user"],
+                   password=conn["password"],
+                   host=conn["host"],
+                   database=conn["database"])
 cur = conn.cursor()
 
 # connect ftp
@@ -118,5 +121,7 @@ def initLoadAllFile():
             print(f)
 
 
-initLoadAllFile()
-ftp.quit()
+if __name__ == "__main__":
+
+    initLoadAllFile()
+    ftp.quit()

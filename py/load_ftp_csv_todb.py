@@ -4,7 +4,6 @@ import numpy as np
 import ftplib
 import csv
 import psycopg2 as pg2
-import re
 
 conn = pg2.connect(user="postgres", password="Pgis@xxx@2020",
                    host="119.59.125.134", database="envidb")
