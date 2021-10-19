@@ -57,7 +57,7 @@ app.post("/api/getlast", (req, res) => {
     })
 })
 
-app.post("/api/testapi/:station/:data", (req, res) => {
+app.get("/api/testapi/:station/:data", (req, res) => {
     const station = req.params.station;
     const data = req.params.data;
     res.status(200).json({
