@@ -57,4 +57,14 @@ app.post("/api/getlast", (req, res) => {
     })
 })
 
+app.post("/api/testapi/:station/:data", (req, res) => {
+    const station = req.params.station;
+    const data = req.params.data;
+    res.status(200).json({
+        data: data,
+        station: station,
+        status: "success"
+    })
+})
+
 module.exports = app;
